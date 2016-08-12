@@ -3,7 +3,9 @@
 <head>
   <title> chat</title>
   <style>
-    #chat1 {height: 200px;}
+    #chat1 {
+      height: 200px;
+    }
 
   </style>
 </head>
@@ -19,9 +21,6 @@
         </form>   
       </div>
 
-
-
-
       <div id= "contentWrap">
           <div id="chatWrap">
             <div id = "chat1"></div>
@@ -34,21 +33,18 @@
       </div>
 
 
-
-
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.3/socket.io.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
 
-
-    
+      // khai bao bien socket khi he thong ket noi toi localhodt:3000
       var socket = io.connect('http://localhost:3000');
       
-    
       
-
+      // khi nhap user va an submit o form setNick se chay tien trinh
       $('#setNick').submit(function(){
+
+      // client gui user len cho server voi key la 'new user'
         socket.emit('new user',$('#nickname').val());
         // alert($('#nickname').val());
         return false;
@@ -56,14 +52,17 @@
       });
 
 
-
+      // khi nhap tin nhan va an submit o form guitinnhan se chay tien trinh
       $('#guitinnhan').submit(function(){
         //e.preventDefault();
+
+        //client gui tin nhan len cho server voi key la 'message client' gia tri gui la $('#tinnhan') nhap vao
         socket.emit('message client', $('#tinnhan').val());
       
         return false;
       });
 
+      //client nhan ve gia tri data tu server va tra ve ra div chat la data.name + data.message
       socket.on('new message', function(data){
         $('#chat1').append(data.name + ' : '+ data.message+"<br/>");
       });

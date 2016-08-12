@@ -25,10 +25,40 @@ var server = http.createServer(app);
 var io = require('socket.io')(server);
 
 
+// server lang nghe client, khi co nguoi ket noi toi voi key la 'connection', va hien lai thong bao cho server
+io.on('connection', function(socket){
+  console.log('co nguoi ket noi toi');
+
+//server lang nghe voi key la 'new user', gia tri nhan ve la data, data la gia tri user nhap vao cua client gui len
+  socket.on('new user', function(data){
+// gan gia tri socket.name la data
+    socket.name = data;
+
+
+  });
+// server lang nghe tin nhan tu client voi key la'message client', gia tri nhan ve la data
+  socket.on('message client', function(data){
+
+// server tra lai gia tri cho client voi key la 'new message', gia tri nay la socket.name duoc gan o tren va tin nhan data client moi gui len
+// voi io.sockets.emit server se tra ve tat ca cac client dang ket noi toi server
+// voi io.broadcast.emit server se tra gia tri ve cho tat ca cac client tru client vua emit len server.
+    io.sockets.emit('new message',{name: socket.name,  message: data})
+
+  
+  });
+});
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
  */
+
+
+
+
+
+
 
 
 /*
@@ -36,6 +66,9 @@ var io = require('socket.io')(server);
   console.log('a user connected');
 });
 */
+
+
+
 
 /*
 
@@ -76,19 +109,7 @@ var news = io
 
 */
 
-io.on('connection', function(socket){
-  console.log('co nguoi ket noi toi');
 
-  socket.on('new user', function(data){
-    socket.name = data;
-
-
-  });
-
-  socket.on('message client', function(data){
-    io.sockets.emit('new message',{name: socket.name,  message: data})
-  });
-});
 
  /* io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
