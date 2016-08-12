@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> chat</title>
+  <style>
+    #chat1 {height: 200px;}
+
+  </style>
+</head>
+<body>
+
+      <div id = "nickWrap">
+        
+        <p>Dang nhap user</p>
+        <p id="loi"></p>
+        <form id="setNick">
+          Ten user: <input id = "nickname"> </input>
+          <input type = "submit" value="Dang nhap" ></input>
+        </form>   
+      </div>
+
+
+
+
+      <div id= "contentWrap">
+          <div id="chatWrap">
+            <div id = "chat1"></div>
+            <form id = "guitinnhan">
+              <input id = "tinnhan"> </input>
+              <input type = "submit" value="send"></input>
+            </form>
+          </div>
+          <div id= "users"></div>
+      </div>
+
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.3/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+
+
+    
+      var socket = io.connect('http://localhost:3000');
+      
+    
+      
+
+      $('#setNick').submit(function(){
+        socket.emit('new user',$('#nickname').val());
+        // alert($('#nickname').val());
+        return false;
+
+      });
+
+
+
+      $('#guitinnhan').submit(function(){
+        //e.preventDefault();
+        socket.emit('message client', $('#tinnhan').val());
+      
+        return false;
+      });
+
+      socket.on('new message', function(data){
+        $('#chat1').append(data.name + ' : '+ data.message+"<br/>");
+      });
+
+
+  </script>
+</body>
+</html>
